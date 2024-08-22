@@ -13,14 +13,6 @@ create table Ciudad(
     foreign key (id_pais) references Pais(id_pais)
 );
 
-create table Direccion(
-	id_direccion int primary key auto_increment,
-    calle_principal varchar(100) not null,
-    calle_secundaria varchar(100) not null,
-    id_ciudad int,
-    foreign key (id_ciudad) references Ciudad(id_ciudad)
-);
-
 create table Puesto(
 	id_puesto int primary key auto_increment,
     nombre varchar(100) not null
@@ -28,46 +20,46 @@ create table Puesto(
 
 create table Farmacia(
 	id_farmacia int primary key auto_increment,
-    nombre varchar(100) not null,
-    telefono varchar(10) not null,
-    ruc varchar(10) not null,
-    id_direccion int,
-    foreign key (id_direccion) references Direccion(id_direccion)
+    nombre varchar(100) not null unique,
+    telefono varchar(10) not null unique,
+    ruc varchar(10) not null unique,
+    id_ciudad int,
+    foreign key (id_ciudad) references Ciudad(id_ciudad)
 );
 
 create table Usuario(
 	id_usuario int primary key auto_increment,
     nombre varchar(100) not null,
     apellido varchar(100) not null,
-    cedula varchar(10) not null,
-    telefono varchar(10) not null,
-    email varchar(10) not null,
+    cedula varchar(10) not null unique,
+    telefono varchar(10) not null unique,
+    email varchar(10) not null unique,
     id_puesto int,
     id_farmacia int,
-    id_direccion int,
+    id_ciudad int,
     foreign key (id_puesto) references Puesto(id_puesto),
     foreign key (id_farmacia) references Farmacia(id_farmacia),
-    foreign key (id_direccion) references Direccion(id_direccion)
+    foreign key (id_ciudad) references Ciudad(id_ciudad)
 );
 
 create table Cliente(
 	id_cliente int primary key auto_increment,
     nombre varchar(100) not null,
     apellido varchar(100) not null,
-    cedula varchar(10) not null,
-    telefono varchar(10) not null,
-    email varchar(100) not null,
-    id_direccion int,
-    foreign key (id_direccion) references Direccion(id_direccion)
+    cedula varchar(10) not null unique,
+    telefono varchar(10) not null unique,
+    email varchar(100) not null unique,
+    id_ciudad int,
+    foreign key (id_ciudad) references Ciudad(id_ciudad)
 );
 
 create table Proveedor(
 	id_proveedor int primary key auto_increment,
     nombre varchar(150) not null,
-    telefono varchar(10) not null,
-    email varchar(60) not null,
-    id_direccion int,
-    foreign key (id_direccion) references Direccion(id_direccion)
+    telefono varchar(10) not null unique,
+    email varchar(60) not null unique,
+    id_ciudad int,
+    foreign key (id_ciudad) references Ciudad(id_ciudad)
 );
 
 create table Producto(
@@ -208,7 +200,3 @@ CREATE TABLE Auditoria_Accesos (
     detalles TEXT,  -- Descripción adicional si es necesario
     FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
 );
-
-
-
-

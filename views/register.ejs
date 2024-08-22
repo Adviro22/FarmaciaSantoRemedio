@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="resources/css/Login/login.css">
+    <title>Register</title>
+    <style>
+        .mensajeError {
+            color: red;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h1>REGISTRO</h1>
+        <form action="/register" method="post">
+            <label for="nombre">Nombre</label>
+            <input type="text" placeholder="Ingrese sus 2 nombres" id="nombre" name="nombre" required>
+
+            <label for="apellido">Apellido</label>
+            <input type="text" placeholder="Ingrese sus 2 apellidos" id="apellido" name="apellido" required>
+
+            <label for="cedula">Cédula</label>
+            <input type="text" placeholder="Ingrese su número de cédula" id="cedula" name="cedula" oninput="validarSoloNumeros(this, 'mensajeError')" required>
+            <p id="mensajeError" class="mensajeError">Solo se permiten números.</p>
+
+            <label for="telefono">Teléfono</label>
+            <input type="text" placeholder="Ingrese su número de teléfono" id="telefono" name="telefono" oninput="validarSoloNumeros(this, 'mensajeError2')" required>
+            <p id="mensajeError2" class="mensajeError">Solo se permiten números.</p>
+
+            <label for="correo">Email</label>
+            <input type="email" placeholder="Ingrese su correo electronico" id="correo" name="correo" required>
+
+            <!-- PASSWORD INPUT -->
+            <label for="password">Contraseña</label>
+            <input type="password" placeholder="Ingrese su contraseña" id="pass" name="pass" required>
+            <input type="submit" class="btn-save" value="Guardar">
+        </form>
+    </div>
+    <script>
+        function validarSoloNumeros(inputElement, errorMessageId) {
+            const mensajeError = document.getElementById(errorMessageId);
+            const valor = inputElement.value;
+        
+            // Reemplaza todo lo que no sea un dígito con una cadena vacía
+            if (/[^0-9]/.test(valor)) {
+                mensajeError.style.display = "block";
+                inputElement.value = valor.replace(/[^0-9]/g, '');
+            } else {
+                mensajeError.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
