@@ -1,52 +1,57 @@
 <!DOCTYPE html>
-<h1>Listado de Productos</h1>
 <html>
   <head>
     <meta charset="utf-8" />
     <title>Productos</title>
     <link rel="stylesheet" href="resources/css/productos.css" />
   </head>
-  <body>
-    <h1>Listado de Productos</h1>
+<body>
+<h1>Listado de Productos</h1>
+
+<!-- Botón para agregar un nuevo producto -->
+<div class="text-center">
+  <a href="/agregar-producto">
+    <button class="btn-nuevo">Nuevo Producto</button>
+  </a>
+</div>
 
 <% if (productos && productos.length > 0) { %>
-  <table border="1">
-    <thead>
+<table border="1">
+  <thead>
+    <tr>
+      <th>ID Producto</th>
+      <th>Descripción</th>
+      <th>Precio de Venta</th>
+      <th>Precio de Compra</th>
+      <th>Stock</th>
+      <th>Fecha de Elaboración</th>
+      <th>Fecha de Vencimiento</th>
+      <th>Acciones</th> <!-- Nueva columna para las acciones -->
+    </tr>
+  </thead>
+  <tbody>
+    <% productos.forEach(function(producto) { %>
       <tr>
-        <th>ID Producto</th>
-        <th>Descripción</th>
-        <th>Precio de Venta</th>
-        <th>Precio de Compra</th>
-        <th>Stock</th>
-        <th>Fecha de Elaboración</th>
-        <th>Fecha de Vencimiento</th>
-        <th>Acciones</th> <!-- Nueva columna para las acciones -->
+        <td><%= producto.id_producto %></td>
+        <td><%= producto.descripcion %></td>
+        <td><%= producto.precio_venta %></td>
+        <td><%= producto.precio_compra %></td>
+        <td><%= producto.stock %></td>
+        <td><%= new Date(producto.fecha_elaboracion).toLocaleDateString() %></td>
+        <td><%= new Date(producto.fecha_vencimiento).toLocaleDateString() %></td>
+        <td>
+          <!-- Botón de Editar -->
+          <a href="/editar-producto/<%= producto.id_producto %>">Editar</a> |
+          <!-- Botón de Eliminar -->
+          <a href="/eliminar-producto/<%= producto.id_producto %>" onclick="return confirm('¿Estás seguro de eliminar este producto?');">Eliminar</a>
+        </td>
       </tr>
-    </thead>
-    <tbody>
-      <% productos.forEach(function(producto) { %>
-        <tr>
-          <td><%= producto.id_producto %></td>
-          <td><%= producto.descripcion %></td>
-          <td><%= producto.precio_venta %></td>
-          <td><%= producto.precio_compra %></td>
-          <td><%= producto.stock %></td>
-          <td><%= new Date(producto.fecha_elaboracion).toLocaleDateString() %></td>
-          <td><%= new Date(producto.fecha_vencimiento).toLocaleDateString() %></td>
-          <td>
-            <!-- Botón de Editar -->
-            <a href="/editar-producto/<%= producto.id_producto %>">Editar</a> |
-            <!-- Botón de Eliminar -->
-            <a href="/eliminar-producto/<%= producto.id_producto %>" onclick="return confirm('¿Estás seguro de eliminar este producto?');">Eliminar</a>
-          </td>
-        </tr>
-      <% }) %>
-    </tbody>
-  </table>
-  <% } else { %>
-    <p>No hay productos disponibles.</p>
-  <% } %>
-
-  </body>
+    <% }) %>
+  </tbody>
+</table>
+<% } else { %>
+  <p>No hay productos disponibles.</p>
+<% } %>
+</body>
 </html>
 

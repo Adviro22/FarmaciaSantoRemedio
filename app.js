@@ -38,6 +38,17 @@ app.get("/",auth, (req, res) => {
   res.render("index");
 });
 
+// Ruta GET para mostrar el formulario de agregar producto
+app.get('/agregar-producto', auth, (req, res) => {
+  res.render('agregar-producto', {
+    alert: false,  // Asegúrate de pasar `alert` por defecto como `false`
+    alertTitle: "",
+    alertMessage: "",
+    alertIcon: ""
+  });
+});
+
+
 //Register
 app.post("/register", async (req, res) => {
   const nombre = req.body.nombre;
@@ -191,6 +202,34 @@ app.get("/producto", auth, (req, res) => {
     res.render("producto", { productos: results });
   });
 });
+
+// Ruta POST para agregar un nuevo producto
+app.post('/agregar-producto', (req, res) => {
+  const { descripcion, precio_venta, precio_compra, stock, fecha_elaboracion, fecha_vencimiento } = req.body;
+
+  // Consulta para insertar el nuevo producto en la base de datos
+  connection.query(
+    "INSERT INTO Producto (descripcion, precio_venta, precio_compra, stock, fecha_elaboracion, fecha_vencimiento) VALUES (?, ?, ?, ?, ?, ?)",
+    [descripcion, precio_venta, precio_compra, stock, fecha_elaboracion, fecha_vencimiento],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        return res.render("agregar-producto", {
+          alert: true,
+          alertTitle: "Error",
+          alertMessage: "Hubo un problema al agregar el producto",
+          alertIcon: "error",
+          showConfirmButton: true,
+          timer: false,
+        });
+      }
+
+      // Si todo salió bien, redirige a la página de productos
+      res.redirect('/producto'); // O redirige a cualquier otra página que desees
+    }
+  );
+});
+
 
 //Ruta Editar Producto
 app.get('/editar-producto/:id', (req, res) => {

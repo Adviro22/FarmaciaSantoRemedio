@@ -1,23 +1,47 @@
 table {
-width: 100%;
-border-collapse: collapse;
-margin: 20px 0;
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
 }
 
-table, th, td {
-border: 1px solid #ddd;
+table,
+th,
+td {
+  border: 1px solid #ddd;
 }
 
-th, td {
-padding: 10px;
-text-align: left;
+th,
+td {
+  padding: 10px;
+  text-align: left;
 }
 
 th {
-background-color: #f2f2f2;
+  background-color: #f2f2f2;
 }
 
 tr:nth-child(even) {
-background-color: #f9f9f9;
+  background-color: #f9f9f9;
 }
-  
+
+/* Estilos para el botón de nuevo producto */
+.btn-nuevo {
+  padding: 10px 20px;
+  background-color: #28a745; /* Verde */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none; /* Elimina el subrayado del enlace */
+  margin-bottom: 20px;
+}
+
+.btn-nuevo:hover {
+  background-color: #218838; /* Verde más oscuro al pasar el mouse */
+}
+
+.text-center {
+  text-align: center;
+  margin-bottom: 20px;
+}
