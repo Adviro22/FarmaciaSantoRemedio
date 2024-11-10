@@ -1,0 +1,32 @@
+<h1>Listado de Productos</h1>
+
+<% if (productos && productos.length > 0) { %>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>ID Producto</th>
+        <th>Descripción</th>
+        <th>Precio de Venta</th>
+        <th>Precio de Compra</th>
+        <th>Stock</th>
+        <th>Fecha de Elaboración</th>
+        <th>Fecha de Vencimiento</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% productos.forEach(function(producto) { %>
+        <tr>
+          <td><%= producto.id_producto %></td>
+          <td><%= producto.descripcion %></td>
+          <td><%= producto.precio_venta %></td>
+          <td><%= producto.precio_compra %></td>
+          <td><%= producto.stock %></td>
+          <td><%= new Date(producto.fecha_elaboracion).toLocaleDateString() %></td>
+          <td><%= new Date(producto.fecha_vencimiento).toLocaleDateString() %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } else { %>
+  <p>No hay productos disponibles.</p>
+<% } %>

@@ -169,6 +169,29 @@ app.get("/logout", function (req, res) {
   res.redirect("/"); // Redirige al inicio u otra página después de cerrar sesión
 });
 
+// Mostrar todos los productos
+app.get("/producto", auth, (req, res) => {
+  connection.query("SELECT * FROM Producto", (error, results) => {
+    if (error) {
+      console.log(error);
+      return res.render("producto", {
+        alert: true,
+        alertTitle: "Error",
+        alertMessage: "Hubo un problema al cargar los productos",
+        alertIcon: "error",
+        showConfirmButton: true,
+        timer: false,
+      });
+    }
+
+    // Verifica los resultados obtenidos de la base de datos
+    console.log("Resultados de la consulta:", results);
+
+    // Renderiza la vista pasando los resultados como la variable "productos"
+    res.render("producto", { productos: results });
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });

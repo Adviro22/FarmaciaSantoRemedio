@@ -1,6 +1,7 @@
 create database SantoRemedioDB;
 use SantoRemedioDB;
 
+select * from Usuario;
 
 create table Pais(
 	id_pais int primary key auto_increment,
@@ -202,3 +203,12 @@ CREATE TABLE Auditoria_Accesos (
     detalles TEXT,  -- Descripción adicional si es necesario
     FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
 );
+
+
+
+INSERT INTO Producto (descripcion, precio_venta, precio_compra, stock, fecha_elaboracion, fecha_vencimiento) VALUES
+('Paracetamol 500mg', 2.50, 1.00, 100, '2024-01-01', '2025-01-01'),
+('Ibuprofeno 400mg', 3.00, 1.20, 50, '2024-02-15', '2025-02-15'),
+('Jarabe para la tos', 5.00, 2.50, 30, '2024-03-10', '2025-03-10'),
+('Vitaminas C 1000mg', 8.00, 3.50, 20, '2024-04-05', '2025-04-05'),
+('Amoxicilina 500mg', 4.50, 2.00, 60, '2024-05-20', '2025-05-20');
