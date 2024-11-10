@@ -1,6 +1,7 @@
 create database SantoRemedioDB;
 use SantoRemedioDB;
 
+
 create table Pais(
 	id_pais int primary key auto_increment,
 	nombre varchar(100) not null
@@ -33,7 +34,8 @@ create table Usuario(
     apellido varchar(100) not null,
     cedula varchar(10) not null unique,
     telefono varchar(10) not null unique,
-    email varchar(10) not null unique,
+    correo varchar(150) not null unique,
+    contraseña varchar(150) not null,
     id_puesto int,
     id_farmacia int,
     id_ciudad int,
