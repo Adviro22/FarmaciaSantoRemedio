@@ -192,6 +192,84 @@ app.get("/producto", auth, (req, res) => {
   });
 });
 
+//Ruta Editar Producto
+app.get('/editar-producto/:id', (req, res) => {
+  const id_producto = req.params.id;
+
+  // Obtener los detalles del producto por ID desde la base de datos
+  connection.query("SELECT * FROM Producto WHERE id_producto = ?", [id_producto], (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.render("editar-producto", {
+        alert: true,
+        alertTitle: "Error",
+        alertMessage: "Hubo un problema al cargar los datos del producto",
+        alertIcon: "error",
+        showConfirmButton: true,
+        timer: false,
+      });
+    }
+
+    // Si se encuentra el producto, renderizamos la vista de edición con los datos
+    if (result.length > 0) {
+      const producto = result[0]; // Tomamos el primer resultado
+      res.render("editar-producto", {
+        producto: producto, // Pasamos los datos del producto a la vista
+      });
+    } else {
+      res.render("editar-producto", {
+        alert: true,
+        alertTitle: "Producto no encontrado",
+        alertMessage: "El producto que intentas editar no existe.",
+        alertIcon: "error",
+        showConfirmButton: true,
+        timer: false,
+      });
+    }
+  });
+});
+
+//Actualizar Productos
+app.post('/actualizar-producto/:id', (req, res) => {
+  const id_producto = req.params.id;
+  const { descripcion, precio_venta, precio_compra, stock, fecha_elaboracion, fecha_vencimiento } = req.body;
+
+  // Realizamos la actualización con una consulta SQL
+  connection.query(
+    "UPDATE Producto SET descripcion = ?, precio_venta = ?, precio_compra = ?, stock = ?, fecha_elaboracion = ?, fecha_vencimiento = ? WHERE id_producto = ?",
+    [descripcion, precio_venta, precio_compra, stock, fecha_elaboracion, fecha_vencimiento, id_producto],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.send('Error al actualizar el producto');
+      } else {
+        res.redirect('/producto'); // Redirigir después de la actualización
+      }
+    }
+  );
+});
+
+//Eliminar Productos
+app.get('/eliminar-producto/:id', (req, res) => {
+  const id_producto = req.params.id;
+
+  // Realizamos la eliminación con una consulta SQL
+  connection.query(
+    "DELETE FROM Producto WHERE id_producto = ?",
+    [id_producto],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.send('Error al eliminar el producto');
+      } else {
+        res.redirect('/producto'); // Redirigir a la lista de productos
+      }
+    }
+  );
+});
+
+
+
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
