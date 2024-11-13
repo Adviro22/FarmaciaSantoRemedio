@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clientes Registrados</title>
+    <link rel="stylesheet" href="resources/css/cliente.css" />
+</head>
+<body>
+    <h1>Clientes Registrados</h1>
+
+    <!-- Botón para agregar un nuevo cliente -->
+    <button onclick="window.location.href='/clientes/nuevo'">Nuevo Cliente</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Cédula</th>
+                <th>Teléfono</th>
+                <th>Email</th>
+                <th>Ciudad</th>
+                <th>Acciones</th> <!-- Columna para los botones de editar y eliminar -->
+            </tr>
+        </thead>
+        <tbody>
+            <% clientes.forEach(cliente => { %>
+            <tr>
+                <td><%= cliente.id_cliente %></td>
+                <td><%= cliente.nombre %></td>
+                <td><%= cliente.apellido %></td>
+                <td><%= cliente.cedula %></td>
+                <td><%= cliente.telefono %></td>
+                <td><%= cliente.email %></td>
+                <td><%= cliente.ciudad %></td>
+                <td>
+                    <!-- Botones para editar y eliminar el cliente -->
+                    <button onclick="window.location.href='/clientes/editar/<%= cliente.id_cliente %>'">Editar</button>
+                    <button onclick="if(confirm('¿Estás seguro de eliminar este cliente?')) { window.location.href='/clientes/eliminar/<%= cliente.id_cliente %>'; }">Eliminar</button>
+                </td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>

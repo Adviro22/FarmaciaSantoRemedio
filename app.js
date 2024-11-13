@@ -8,6 +8,7 @@ import { DateTime } from "luxon";
 
 const app = express();
 const PORT = process.env.PORT;
+dotenv.config();
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -46,6 +47,138 @@ app.get('/agregar-producto', auth, (req, res) => {
     alertMessage: "",
     alertIcon: ""
   });
+});
+
+// Ruta para mostrar todos los clientes
+app.get('/clientes', auth, (req, res) => {
+  const query = `
+    SELECT Cliente.id_cliente, Cliente.nombre, Cliente.apellido, Cliente.cedula, 
+           Cliente.telefono, Cliente.email, Ciudad.nombre AS ciudad
+    FROM Cliente
+    LEFT JOIN Ciudad ON Cliente.id_ciudad = Ciudad.id_ciudad
+  `;
+
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.log(error);
+      return res.render('clientes', {
+        alert: true,
+        alertTitle: 'Error',
+        alertMessage: 'Hubo un problema al cargar los clientes',
+        alertIcon: 'error',
+        showConfirmButton: true,
+        timer: false,
+      });
+    }
+
+    res.render('clientes', { clientes: results });
+  });
+});
+
+
+app.get('/registrar-cliente', auth, (req, res) => {
+  res.render('registrar-cliente');
+});
+
+// En tu ruta para registrar clientes
+app.get('/registrar-cliente', auth, (req, res) => {
+  connection.query('SELECT * FROM Ciudad', (error, results) => {
+      if (error) {
+          // Manejar el error
+      } else {
+          res.render('registrar-cliente', { ciudades: results });
+      }
+  });
+});
+
+app.get('/clientes/nuevo', auth, (req, res) => {
+  res.render('nuevoCliente'); // Asume que tienes una vista `nuevoCliente.ejs`
+});
+
+app.get('/clientes/editar/:id', auth, (req, res) => {
+  const { id } = req.params;
+  connection.query('SELECT * FROM Cliente WHERE id_cliente = ?', [id], (error, results) => {
+    if (error || results.length === 0) {
+      console.log(error);
+      res.redirect('/clientes');
+    } else {
+      res.render('editarCliente', { cliente: results[0] }); // Vista `editarCliente.ejs`
+    }
+  });
+});
+
+
+//POST
+
+app.post('/clientes', auth, (req, res) => {
+  const { nombre, apellido, cedula, telefono, email, id_ciudad } = req.body;
+  const query = `
+    INSERT INTO Cliente (nombre, apellido, cedula, telefono, email, id_ciudad)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `;
+  connection.query(query, [nombre, apellido, cedula, telefono, email, id_ciudad], (error) => {
+    if (error) {
+      console.log(error);
+      res.redirect('/clientes'); // O muestra un mensaje de error
+    } else {
+      res.redirect('/clientes');
+    }
+  });
+});
+
+app.post('/clientes/editar/:id', auth, (req, res) => {
+  const { id } = req.params;
+  const { nombre, apellido, cedula, telefono, email, id_ciudad } = req.body;
+  const query = `
+    UPDATE Cliente SET nombre = ?, apellido = ?, cedula = ?, telefono = ?, email = ?, id_ciudad = ?
+    WHERE id_cliente = ?
+  `;
+  connection.query(query, [nombre, apellido, cedula, telefono, email, id_ciudad, id], (error) => {
+    if (error) {
+      console.log(error);
+      res.redirect('/clientes'); // O muestra un mensaje de error
+    } else {
+      res.redirect('/clientes');
+    }
+  });
+});
+
+app.get('/clientes/eliminar/:id', auth, (req, res) => {
+  const { id } = req.params;
+  connection.query('DELETE FROM Cliente WHERE id_cliente = ?', [id], (error) => {
+    if (error) {
+      console.log(error);
+    }
+    res.redirect('/clientes');
+  });
+});
+
+
+app.post('/registrar-cliente', auth, (req, res) => {
+  const { nombre, apellido, cedula, telefono, email, id_ciudad } = req.body;
+
+  // Validación de datos (opcional)
+
+  connection.query(
+      'INSERT INTO Cliente SET ?',
+      {
+          nombre,
+          apellido,
+          cedula,
+          telefono,
+          email,
+          id_ciudad
+      },
+      (error, results) => {
+          if (error) {
+              console.log(error);
+              // Manejar el error, por ejemplo, mostrar un mensaje al usuario
+              res.render('registrar-cliente', { error: 'Error al registrar el cliente' });
+          } else {
+              res.redirect('/clientes');
+          }
+      }
+  );
 });
 
 
