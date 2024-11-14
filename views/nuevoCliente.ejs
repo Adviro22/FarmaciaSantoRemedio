@@ -7,12 +7,12 @@
     <link rel="stylesheet" href="/css/clientesform.css">
 </head>
 <body>
-    <h1>Registrar Cliente</h1>
     <% if (typeof error !== 'undefined' && error) { %>
         <p class="error"><%= error %></p>
     <% } %>
     
     <form action="/registrar-cliente" method="POST">
+        <h1>Registrar Cliente</h1>
         <div>
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre" required>
@@ -42,10 +42,12 @@
             <label for="ciudad">Ciudad:</label>
             <select id="ciudad" name="id_ciudad" required>
                 <% ciudades.forEach(ciudad => { %>
+                    <option value=""></option>
                     <option value="<%= ciudad.id_ciudad %>"><%= ciudad.nombre %></option>
                 <% }) %>
             </select>
         </div>
+        <br>
 
         <button type="submit">Registrar Cliente</button>
     </form>

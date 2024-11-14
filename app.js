@@ -75,11 +75,6 @@ app.get('/clientes', auth, (req, res) => {
   });
 });
 
-
-app.get('/registrar-cliente', auth, (req, res) => {
-  res.render('registrar-cliente');
-});
-
 // En tu ruta para registrar clientes
 app.get('/registrar-cliente', auth, (req, res) => {
   connection.query('SELECT * FROM Ciudad', (error, results) => {
@@ -92,7 +87,15 @@ app.get('/registrar-cliente', auth, (req, res) => {
 });
 
 app.get('/clientes/nuevo', auth, (req, res) => {
-  res.render('nuevoCliente'); // Asume que tienes una vista `nuevoCliente.ejs`
+  // Realizar la consulta para obtener las ciudades
+  connection.query('SELECT * FROM Ciudad', (error, ciudades) => {
+    if (error) {
+      console.log(error);
+      return res.status(500).send('Error al obtener las ciudades');
+    }
+    // Renderizar la vista y pasar las ciudades obtenidas
+    res.render('nuevoCliente', { ciudades });
+  });
 });
 
 app.get('/clientes/editar/:id', auth, (req, res) => {
@@ -180,7 +183,6 @@ app.post('/registrar-cliente', auth, (req, res) => {
       }
   );
 });
-
 
 //Register
 app.post("/register", async (req, res) => {
